@@ -58,6 +58,7 @@ def fileupload(request):
                     col[0] = int(col[0])
                 medium.append(col[0])
     if len(bom[0]) == 22:
+    # 使用dealprocess将bominfo中的数据处理为Part_Con
         dealprocess(bom)
     #p = Part.objects.get(ItemNO="A0042-GS-C01-01-00")
     # print(u'%s' % (p.ItemNO.__str__() + "#" + p.Name.__str__()))
