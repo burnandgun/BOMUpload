@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎光临</title>
+</head>
+<body>
+<p>上传EXCEL表格</p>>
+<form class="" action="../fileupload/" method="post" enctype="multipart/form-data" >
+  {% csrf_token %}
+  <input type="file" name="excel">
+  <input type="submit" value="上传">
+ </form>
+</body>
+</html>
