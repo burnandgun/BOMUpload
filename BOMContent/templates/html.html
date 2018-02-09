@@ -1,0 +1,77 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+<head>
+    <meta charset="UTF-8">
+    <title>搜索</title>
+</head>
+<body>
+
+<form action="/BOMSearch/" method="get">
+
+{#script在线引用#}
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+搜索条件:
+    {#选择控件#}
+<select id="name">
+           <option value="ItemNO">物号</option>
+           <option value="Name">名称</option>
+           <option value="Matrial">材料</option>
+           <option value="Mass">重量</option>
+           <option value="StandardNumber">标准号</option>
+           <option value="BelongedProNum">原属产品号</option>
+           <option value="Remark">备注</option>
+{#           <option value="Num">数量</option>#}
+</select>
+<select id="symbol">
+           <option value="equalsym">等于</option>
+           <option value="containsym">包含</option>
+           <option value="uncontainsym">不包含</option>
+           <option value="lequalsym">左等于</option>
+           <option value="requalsym">右等于</option>
+</select>
+{#输入控件#}
+<input id ="value">
+{#按钮控件#}
+<button onclick="query_parts_info();return false;">搜索</button>
+{#用script进行视图、模板、页面数据操作#}
+
+<script>
+    function query_parts_info() {
+        //获取页面数据
+        var name = document.getElementById("name");
+        var symbol = document.getElementById("symbol");
+        var value = $('#value').val();
+        $("#content").html("");
+        //将数据整合
+        var part_info_json_str = {
+            'name':name.value,
+            'symbol':symbol.value,
+            'value':value,
+        };
+        //将整合数据用处理为JSON字符串
+        var query_info_json = JSON.stringify(part_info_json_str);
+        //ajax操作
+        $.ajax({
+            url: '/PDM_PartSearch/',
+            data: {
+                query_info_json: query_info_json,
+            },
+            type: "get",
+            success: function (data) {
+                $("#content").html(data);
+                //url视图修改后返回的数据为data,其中可以进行js操作
+            },
+        });
+        $.ajaxSetup({
+           data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+        }
+</script>
+
+    </form>
+<hr>
+<a href="http://127.0.0.1:8000/bomupload/">返回BOM上传页面</a>
+<hr>
+<span id = "content"></span>
+</body>
+</html>

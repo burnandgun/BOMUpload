@@ -32,8 +32,9 @@ class Part(models.Model):
     # Token = models.CharField(max_length=64, verbose_name="Token", null=True, blank=True)
     # Department = models.ForeignKey(Department, verbose_name="部门", null=True, blank=True)
 
+
     def __unicode__(self):
-        return u'%s' % (self.ItemNO.__str__() + ":" + self.Num.__str__())
+        return u'%s' % (self.ItemNO.__str__() + ":" + self.Name.__str__() + "  单重:"+self.Mass.__str__() + "  数量:"+"\n")
     # self.ItemNO.__str__() + "#" +
     class Meta:
         verbose_name = "产品"
@@ -43,14 +44,16 @@ class Part(models.Model):
 
 class Part_Con(models.Model):
     LNO = models.IntegerField(verbose_name="件号")
-    Head = models.ForeignKey(Part, related_name='HeadBJ', verbose_name="主部件")
-    Leef = models.ForeignKey(Part, related_name='LeefBJ', verbose_name="子部件")
+    Head = models.ForeignKey(Part, related_name='HeadBJ', verbose_name="主部件", null=True, blank=True,
+                             on_delete=models.SET_NULL)
+    Leef = models.ForeignKey(Part, related_name='LeefBJ', verbose_name="子部件", null=True, blank=True,
+                             on_delete=models.SET_NULL)
     LeefNum = models.IntegerField(verbose_name="子部件数量")
    #  Token = models.ForeignKey(CloudLinkCode,  verbose_name="云联码", blank=True, null=True)
     isWatch = models.BooleanField(verbose_name="要求监视", default=False)
 
     def __unicode__(self):
-        return u'%s' % (self.Head.__str__())
+        return u'%s' % (self.LeefNum.__str__())
 
     class Meta:
         verbose_name = "产品关系"

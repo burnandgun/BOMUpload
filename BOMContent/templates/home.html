@@ -4,12 +4,78 @@
     <meta charset="UTF-8">
     <title>欢迎光临</title>
 </head>
-<body>
-<p>上传EXCEL表格</p>>
-<form class="" action="../fileupload/" method="post" enctype="multipart/form-data" >
-  {% csrf_token %}
-  <input type="file" name="excel">
-  <input type="submit" value="上传">
- </form>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<p>上传TXT文档</p>
+<input id="file" name="file" type="file"/>
+<button id="upload" type="button" onclick="txtupload();">上传</button>
+<span id = "loading1"></span>
+ {% csrf_token %}
+<script>
+    function txtupload() {
+        $("#upload").attr('disabled',true);
+        $("#content").html('');
+        $("#loading1").html("上传中。请稍等。");
+        var formData = new FormData();
+        formData.append('file', $('#file')[0].files[0]);
+        $.ajax({
+            url: '/textchange/',
+            type: 'POST',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                     $("#content").html(data);
+                     $("#upload").attr('disabled',false);
+                     $("#loading1").html("");
+                //根据返回值进行跳转
+            },
+            error: function () {
+                alert('上传失败');
+                $("#upload").attr('disabled',false);
+                $("#loading1").html("上传失败。请重新选择文件");
+            },
+        })
+    }
+</script>
+<hr>
+<p>上传EXCEL表格</p>
+<input id="excel" name="excel" type="file"/>
+<button id="uploadexcel" type="button" onclick="excelupload();">上传</button>
+<span id = "loading2"></span>
+ {% csrf_token %}
+<script>
+    function excelupload() {
+        $("#uploadexcel").attr('disabled',true);
+        $("#content").html('');
+        $("#loading2").html("上传中。请稍等。");
+        var formData = new FormData();
+        formData.append('excel', $('#excel')[0].files[0]);
+        $.ajax({
+            url: '/fileupload/',
+            type: 'POST',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                     $("#content").html(data);
+                     $("#uploadexcel").attr('disabled',false);
+                     $("#loading2").html("");
+                //根据返回值进行跳转
+            },
+            error: function () {
+                alert('上传失败');
+                $("#uploadexcel").attr('disabled',false);
+                $("#loading2").html("上传失败。请重新选择文件");
+            },
+        })
+    }
+</script>
+{#<hr>#}
+{#<a href="http://127.0.0.1:8000/BOMSearch/">BOM查询页面</a>#}
+<hr>
+<a href="http://127.0.0.1:8000/BOMSearch">查询BOM</a><br/><br/>
+<span id = "content"></span>
 </body>
 </html>

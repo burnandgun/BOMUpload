@@ -1,14 +1,32 @@
-#!/usr/bin/env python
-# coding:utf-8
-#
-# import os
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BOMUpload.settings")
-#
-#
-# import django
-# if django.VERSION >= (1, 7):
-#     django.setup()
-#
+# # !/usr/bin/env python
+# # coding:utf-8
+
+import os
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BOMUpload.settings")
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+
+import django
+if django.VERSION >= (1, 7):
+    django.setup()
+
+from BOMContent.models import *
+
+# p1 = Part.objects.filter(ItemNO__contains="A0042")
+
+print Part.objects.all().delete()
+print Part_Con.objects.all().delete()
+
+# a = Part.objects.get(ItemNO__contains="A0038-FPG-00")
+# b = a.HeadBJ.all()
+# print b
+
+
 #
 # def main():
 #     from BOMContent.models import Part_Con, Part

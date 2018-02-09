@@ -20,6 +20,10 @@ from BOMContent.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^$', home),
-    url(r'^fileupload/', fileupload),
-    url(r'^$', home, name='home'),
+    url(r'^bomupload', bomupload, name='bomupload'),
+    url(r'^$', index, name='home'),
+    url(r'PDM_PartSearch', PDM_PartSearch),
+    url(r'BOMSearch/', BOMSearch),
+    url(r'fileupload/', fileupload),
+    url(r'textchange/', textchange),
 ]

@@ -6,6 +6,7 @@ import django
 import os
 
 from BOMContent.models import Part, Part_Con
+from BOMContent.function.function import *
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BOMUpload.settings")
 
@@ -13,19 +14,35 @@ if django.VERSION >= (1, 7):
     django.setup()
 
 
-def dealprocess(list):
-    for i in xrange(1, len(list)):
+def dealprocess(list, title):
+    RelaNO = titlejudge("RelaNO", title)
+    ItemNO = titlejudge("ItemNO", title)
+    SequenceNums = titlejudge("SequenceNums", title)
+    Num = titlejudge("Num", title)
+    for i in range(0, len(list)):
+        if int(list[i][RelaNO]) == 1 and ItemNO is not False:
+            p = Part.objects.get(ItemNO=list[i][ItemNO])
+            del list[i]
+            break
+    Part_Con.objects.create(LNO=1,
+                            Leef=p,
+                            LeefNum=1,
+                            )
+    for i in xrange(0, len(list)):
         temp1 = str(list[i][0]).split('.')
         for j in xrange(0, len(list) - 1):
             temp2 = str(list[j][0]).split('.')
             # 从数组中寻找BOM(i)temp1的父部件BOM(j)temp2
-            if compareTemp(temp1, temp2):
-                p1 = Part.objects.get(ItemNO=list[i][1])
-                p2 = Part.objects.get(ItemNO=list[j][1])
-                Part_Con.objects.create(LNO=int(list[i][21]),
+            if compareTemp(temp1, temp2) \
+                    and ItemNO is not False \
+                    and SequenceNums is not False\
+                    and Num is not False:
+                p1 = Part.objects.get(ItemNO=list[i][ItemNO])
+                p2 = Part.objects.get(ItemNO=list[j][ItemNO])
+                Part_Con.objects.create(LNO=int(list[i][SequenceNums]),
                                         Head=p2,
                                         Leef=p1,
-                                        LeefNum=int(list[i][19]),
+                                        LeefNum=int(list[i][Num]),
                                         )
                 break
 
