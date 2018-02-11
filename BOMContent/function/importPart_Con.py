@@ -24,10 +24,14 @@ def dealprocess(list, title):
             p = Part.objects.get(ItemNO=list[i][ItemNO])
             del list[i]
             break
-    Part_Con.objects.create(LNO=1,
-                            Leef=p,
-                            LeefNum=1,
-                            )
+    if not Part_Con.objects.filter(LNO=1,
+                                   Leef=p,
+                                   LeefNum=1,
+                                   ).exists():
+        Part_Con.objects.create(LNO=1,
+                                Leef=p,
+                                LeefNum=1,
+                                )
     for i in xrange(0, len(list)):
         temp1 = str(list[i][0]).split('.')
         for j in xrange(0, len(list) - 1):
@@ -39,11 +43,15 @@ def dealprocess(list, title):
                     and Num is not False:
                 p1 = Part.objects.get(ItemNO=list[i][ItemNO])
                 p2 = Part.objects.get(ItemNO=list[j][ItemNO])
-                Part_Con.objects.create(LNO=int(list[i][SequenceNums]),
-                                        Head=p2,
-                                        Leef=p1,
-                                        LeefNum=int(list[i][Num]),
-                                        )
+                if not Part_Con.objects.filter(Head=p2,
+                                               Leef=p1,
+                                               LeefNum=int(list[i][Num]),
+                                               ).exists():
+                    Part_Con.objects.create(LNO=int(list[i][SequenceNums]),
+                                            Head=p2,
+                                            Leef=p1,
+                                            LeefNum=int(list[i][Num]),
+                                            )
                 break
 
 

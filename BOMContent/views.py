@@ -69,13 +69,10 @@ def fileupload(request):
             #col[1] = itemNO + '-' + col[1]
             # col数组赋值于bom数组，两者相关数据指向同一地址，因此col后改变也可以改变bom数组。可用copy来消除这种情况。
             bom.append(col)
-            # 如果文件包含层次号，弥补修改excel层次号中的1.10为1.1，或者1.20为1.2以此类推的情况。便于处理为Part_Con
+            # 如果文件包含层次号，弥补修改excel层次号中的1.10为1.1，或者1.10为1.100以此类推的情况。便于处理为Part_Con
             if RelaNO is not False:
                 if isinstance(col[RelaNO], float):
-                    for j in xrange(0, len(medium)):
-                        if col[RelaNO] == medium[j]:
-                            # 保留2个小数点
-                            col[RelaNO] = '{:.2f}'.format(col[RelaNO])
+                    col[RelaNO] = count(col[RelaNO], medium)
                     if col[RelaNO] == 1.0:
                         col[RelaNO] = int(col[RelaNO])
                     medium.append(col[RelaNO])
@@ -130,6 +127,7 @@ def textchange(request):
         return render(request, 'wronghtml.html', {'str': "上传的不是txt文档"})
     bom = []
     medium = []
+    medium3 = []
     templine = []
     temppart = len(Part.objects.all())
     temppartCon = len(Part_Con.objects.all())
@@ -157,12 +155,9 @@ def textchange(request):
             # 如果为mtlinfo文件，则将所有零部件录入Part数据库。
             # 如果文件包含层次号，弥补修改excel层次号中的1.10为1.1，或者1.20为1.2以此类推的情况。便于处理为Part_Con
             if RelaNO is not False:
-                # 弥补修改excel层次号中的1.10为1.1，或者1.20为1.2以此类推的情况。便于处理为Part_Con。只适用于总装图中部套数量100以下的情况
+                # 弥补修改excel层次号中的1.1为1.10，或者1.10为1.100以此类推的情况。便于处理为Part_Con。只适用于总装图中部套数量100以下的情况
                 if isinstance(col[RelaNO], float):
-                    for j in xrange(0, len(medium)):
-                        if col[RelaNO] == medium[j]:
-                            # 保留2个小数点
-                            col[RelaNO] = '{:.2f}'.format(col[0])
+                    col[RelaNO] = count(col[RelaNO], medium)
                     if col[RelaNO] == 1.0:
                         col[RelaNO] = int(col[RelaNO])
                     medium.append(col[RelaNO])
