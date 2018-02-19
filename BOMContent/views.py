@@ -40,6 +40,7 @@ def fileupload(request):
     row = table.nrows
     bom = []
     medium = []
+    jsoncontent = None
     temppart = len(Part.objects.all())
     temppartCon = len(Part_Con.objects.all())
     # itemNO = None
@@ -107,12 +108,13 @@ def fileupload(request):
                 continue
         if RelaNO is not False:
         # 使用dealprocess将bominfo中的数据处理为Part_Con
-            dealprocess(bom, title)
+            jsoncontent = dealprocess(bom, title, jsoncontent)
         #p = Part.objects.get(ItemNO="A0042-GS-C01-01-00")
         # print(u'%s' % (p.ItemNO.__str__() + "#" + p.Name.__str__()))
         if temppart == len(Part.objects.all()) and temppartCon == len(Part_Con.objects.all()):
             return render(request, 'wronghtml.html', {'str': "未更新数据库！上传文档有误或者BOM已上传!"})
-        return render(request, 'bomupload.html')
+        # return render(request, 'bomupload.html')
+        return render(request, 'wronghtml.html', {'str': jsoncontent})
         #  a=1
         #  return HttpResponse('OK')
     except:

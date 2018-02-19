@@ -34,7 +34,8 @@ class Part(models.Model):
 
 
     def __unicode__(self):
-        return u'%s' % (self.ItemNO.__str__() + ":" + self.Name.__str__() + "  单重:"+self.Mass.__str__() + "  数量:"+"\n")
+        return u'%s' % (self.ItemNO.__str__() + "#" + self.Name.__str__())
+        #  + "  单重:"+self.Mass.__str__() + "  数量:"+"\n"
     # self.ItemNO.__str__() + "#" +
     class Meta:
         verbose_name = "产品"
